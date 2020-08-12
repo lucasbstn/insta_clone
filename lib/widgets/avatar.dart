@@ -1,3 +1,4 @@
+import 'package:cache_image/cache_image.dart';
 import 'package:flutter/material.dart';
 import 'package:insta_clone/models/user.dart';
 
@@ -11,9 +12,12 @@ class Avatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: CircleAvatar(
-        child: ClipOval(
-          child: Image.network(user.avatarUrl),
+      child: ClipOval(
+        child: Image(
+          image: CacheImage(
+            user.avatarUrl,
+          ),
+          fit: BoxFit.fill,
         ),
       ),
       padding: EdgeInsets.all(

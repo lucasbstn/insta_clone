@@ -1,19 +1,30 @@
+import 'package:camera/camera.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:insta_clone/views/home.dart';
-
+import 'controllers/camera_controller.dart';
+import 'controllers/user_controller.dart';
+import 'views/login.dart';
+import 'views/profile.dart';
 import 'views/search.dart';
+import 'views/home.dart';
 import 'widgets/add.dart';
 
-void main() {
-  runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  FirebaseUser user = await FirebaseAuth.instance.currentUser();
+  runApp(MyApp(user));
 }
 
 class MyApp extends StatelessWidget {
+  final FirebaseUser user;
+
+  const MyApp(this.user);
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
         appBarTheme: AppBarTheme(
           color: Colors.white,
           textTheme: TextTheme(
@@ -25,7 +36,17 @@ class MyApp extends StatelessWidget {
           labelColor: Colors.black,
         ),
       ),
-      home: Wrapper(),
+      home: GetBuilder<UserController>(
+        init: UserController(user),
+        builder: (controller) {
+          Get.put(user);
+          if (controller.firebaseUser == null) {
+            return Login();
+          } else {
+            return Wrapper();
+          }
+        },
+      ),
     );
   }
 }
@@ -61,6 +82,12 @@ class _WrapperState extends State<Wrapper> with SingleTickerProviderStateMixin {
       },
     );
     super.initState();
+    camerasInit();
+  }
+
+  Future camerasInit() async {
+    CameraControllerX controller = Get.put(CameraControllerX());
+    controller.cameras = await availableCameras();
   }
 
   @override
@@ -96,13 +123,6 @@ class AddContainer extends StatelessWidget {
 }
 
 class Liked extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold();
-  }
-}
-
-class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold();

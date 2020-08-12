@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:insta_clone/models/user.dart';
 import 'package:insta_clone/widgets/avatar.dart';
 import 'package:insta_clone/widgets/feed_card.dart';
@@ -10,17 +10,13 @@ class Home extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        iconTheme: Theme.of(context).appBarTheme.iconTheme,
-        actionsIconTheme: Theme.of(context).appBarTheme.iconTheme,
-        textTheme: Theme.of(context).appBarTheme.textTheme,
-        backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Icon(Icons.photo_camera),
+          icon: Icon(MaterialCommunityIcons.instagram),
           onPressed: () => null,
         ),
         title: Text(
           'Instagram',
-          style: GoogleFonts.pacifico(color:Colors.black),
+          style: TextStyle(fontFamily: 'Billabong', fontSize: 30),
         ),
         actions: [
           IconButton(
@@ -39,9 +35,9 @@ class Home extends StatelessWidget {
           FeedCard(
             size: size,
             user: User(
-              'alinaCaprioara',
-              'https://i.pravatar.cc/301',
-              true,
+              username: 'alinaCaprioara',
+              avatarUrl: 'https://i.pravatar.cc/302',
+              hasStory: false,
             ),
             isLiked: true,
             numberComments: 1253,
@@ -56,9 +52,9 @@ class Home extends StatelessWidget {
           FeedCard(
             size: size,
             user: User(
-              'lucasbstn',
-              'https://i.pravatar.cc/306',
-              true,
+              username: 'alinaCaprioara',
+              avatarUrl: 'https://i.pravatar.cc/302',
+              hasStory: false,
             ),
             isLiked: true,
             numberComments: 1253,
@@ -73,9 +69,9 @@ class Home extends StatelessWidget {
           FeedCard(
             size: size,
             user: User(
-              'antoine',
-              'https://i.pravatar.cc/309',
-              false,
+              username: 'alinaCaprioara',
+              avatarUrl: 'https://i.pravatar.cc/302',
+              hasStory: false,
             ),
             isLiked: true,
             numberComments: 1253,
@@ -103,51 +99,58 @@ class Stories extends StatelessWidget {
     return Container(
       height: 80,
       child: ListView(
-        itemExtent: 80,
         padding: EdgeInsets.all(8.0),
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         children: [
-          Avatar(
-            user: User(
-              'lucasbstn',
-              'https://i.pravatar.cc/301',
-              true,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Avatar(
+              user: User(
+                username: 'alinaCaprioara',
+                avatarUrl: 'https://i.pravatar.cc/302',
+                hasStory: false,
+              ),
             ),
           ),
-          Avatar(
-            user: User(
-              'alinaCaprioara',
-              'https://i.pravatar.cc/302',
-              false,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Avatar(
+              user: User(
+                username: 'alinaCaprioara',
+                avatarUrl: 'https://i.pravatar.cc/303',
+                hasStory: false,
+              ),
             ),
           ),
-          Avatar(
-            user: User(
-              'antoinebstn',
-              'https://i.pravatar.cc/303',
-              true,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Avatar(
+              user: User(
+                username: 'alinaCaprioara',
+                avatarUrl: 'https://i.pravatar.cc/306',
+                hasStory: false,
+              ),
             ),
           ),
-          Avatar(
-            user: User(
-              'michaelpilot',
-              'https://i.pravatar.cc/304',
-              true,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Avatar(
+              user: User(
+                username: 'alinaCaprioara',
+                avatarUrl: 'https://i.pravatar.cc/305',
+                hasStory: false,
+              ),
             ),
           ),
-          Avatar(
-            user: User(
-              'jeanPoirot',
-              'https://i.pravatar.cc/305',
-              true,
-            ),
-          ),
-          Avatar(
-            user: User(
-              'NFOe',
-              'https://i.pravatar.cc/306',
-              true,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Avatar(
+              user: User(
+                username: 'alinaCaprioara',
+                avatarUrl: 'https://i.pravatar.cc/304',
+                hasStory: false,
+              ),
             ),
           ),
         ],

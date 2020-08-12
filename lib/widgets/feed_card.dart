@@ -48,8 +48,12 @@ class _FeedCardState extends State<FeedCard> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Avatar(
-                      user: widget.user,
+                    child: Container(
+                      height: 40,
+                      width: 40,
+                      child: Avatar(
+                        user: widget.user,
+                      ),
                     ),
                   ),
                   Text(widget.user.username),
