@@ -1,5 +1,6 @@
 import 'package:cache_image/cache_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:insta_clone/models/user.dart';
 
 class Avatar extends StatelessWidget {
@@ -34,6 +35,55 @@ class Avatar extends StatelessWidget {
         ), // border color
         shape: BoxShape.circle,
       ),
+    );
+  }
+}
+
+class SignedInUserAvatar extends StatelessWidget {
+  const SignedInUserAvatar({
+    Key key,
+    @required this.user,
+  }) : super(key: key);
+
+  final User user;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        SizedBox(
+          height: Get.height * 0.13,
+          width: Get.height * 0.13,
+          child: Avatar(
+            user: user,
+          ),
+        ),
+        Positioned(
+          bottom: 0,
+          right: 0,
+          child: Container(
+            height: 25,
+            width: 25,
+            child: CircleAvatar(
+              backgroundColor: Colors.blue,
+              child: ClipOval(
+                child: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 20,
+                ),
+              ),
+            ),
+            padding: EdgeInsets.all(
+              2.0,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

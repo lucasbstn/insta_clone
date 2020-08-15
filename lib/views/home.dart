@@ -1,8 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:get/get.dart';
+import 'package:insta_clone/controllers/user_controller.dart';
+import 'package:insta_clone/models/post.dart';
 import 'package:insta_clone/models/user.dart';
 import 'package:insta_clone/widgets/avatar.dart';
+
 import 'package:insta_clone/widgets/feed_card.dart';
+import 'package:insta_clone/widgets/stories.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -26,132 +32,68 @@ class Home extends StatelessWidget {
         ],
       ),
       body: ListView(
-        shrinkWrap: true,
         children: [
-          Stories(),
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: Row(
+              children: [
+                Container(
+                  width: 60,
+                  height: 60,
+                  child: SignedInUserAvatar(user: UserController.to.user),
+                ),
+                Stories(),
+              ],
+            ),
+          ),
           Divider(
             thickness: 1.3,
           ),
-          FeedCard(
-            size: size,
-            user: User(
-              username: 'alinaCaprioara',
-              avatarUrl: 'https://i.pravatar.cc/302',
-              hasStory: false,
-            ),
-            isLiked: true,
-            numberComments: 1253,
-            numberLikes: 199,
-            description: 'My holiday with my girlfriend',
-            hashtags: '#beach #perfect',
-            timestamp: DateTime.now()
-                .subtract(Duration(hours: 11))
-                .millisecondsSinceEpoch,
-            imgUrl: 'https://picsum.photos/500',
-          ),
-          FeedCard(
-            size: size,
-            user: User(
-              username: 'alinaCaprioara',
-              avatarUrl: 'https://i.pravatar.cc/302',
-              hasStory: false,
-            ),
-            isLiked: true,
-            numberComments: 1253,
-            numberLikes: 199,
-            description: 'My holiday with my girlfriend',
-            hashtags: '#beach #perfect',
-            timestamp: DateTime.now()
-                .subtract(Duration(hours: 11))
-                .millisecondsSinceEpoch,
-            imgUrl: 'https://picsum.photos/502',
-          ),
-          FeedCard(
-            size: size,
-            user: User(
-              username: 'alinaCaprioara',
-              avatarUrl: 'https://i.pravatar.cc/302',
-              hasStory: false,
-            ),
-            isLiked: true,
-            numberComments: 1253,
-            numberLikes: 199,
-            description: 'My holiday with my girlfriend',
-            hashtags: '#beach #perfect',
-            timestamp: DateTime.now()
-                .subtract(Duration(hours: 11))
-                .millisecondsSinceEpoch,
-            imgUrl: 'https://picsum.photos/501',
-          ),
-        ],
-      ),
-    );
-  }
-}
+          StreamBuilder(
+            stream: Firestore.instance.collection('users').snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (!snapshot.hasData) {
+                return Center(child: CircularProgressIndicator());
+              } else {
+                return GetBuilder<UserController>(
+                  builder: (userController) {
+                    List<User> users = List();
+                    snapshot.data.documents
+                        .where(
+                      (user) => userController.user.following.contains(
+                        user.data['uid'],
+                      ),
+                    )
+                        .forEach(
+                      (element) {
+                        users.add(User.fromMap(element.data));
+                      },
+                    );
 
-class Stories extends StatelessWidget {
-  const Stories({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 80,
-      child: ListView(
-        padding: EdgeInsets.all(8.0),
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Avatar(
-              user: User(
-                username: 'alinaCaprioara',
-                avatarUrl: 'https://i.pravatar.cc/302',
-                hasStory: false,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Avatar(
-              user: User(
-                username: 'alinaCaprioara',
-                avatarUrl: 'https://i.pravatar.cc/303',
-                hasStory: false,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Avatar(
-              user: User(
-                username: 'alinaCaprioara',
-                avatarUrl: 'https://i.pravatar.cc/306',
-                hasStory: false,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Avatar(
-              user: User(
-                username: 'alinaCaprioara',
-                avatarUrl: 'https://i.pravatar.cc/305',
-                hasStory: false,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Avatar(
-              user: User(
-                username: 'alinaCaprioara',
-                avatarUrl: 'https://i.pravatar.cc/304',
-                hasStory: false,
-              ),
-            ),
+                    List<List<dynamic>> posts = List();
+                    users.forEach(
+                      (user) {
+                        user.posts.forEach((post) {
+                          posts.add([user, post]);
+                        });
+                      },
+                    );
+                    return ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: posts.length,
+                      itemBuilder: (context, index) {
+                        return FeedCard(
+                          size: size,
+                          post: posts[index][1],
+                          user: posts[index][0],
+                        );
+                      },
+                    );
+                  },
+                );
+              }
+            },
           ),
         ],
       ),

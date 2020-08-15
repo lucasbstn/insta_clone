@@ -33,7 +33,8 @@ class _EditProfileState extends State<EditProfile> {
           IconButton(
               icon: Icon(Icons.check, color: Colors.blue),
               onPressed: () {
-                Get.find<UserController>().updateUser();
+                UserController userController = UserController.to;
+                userController.updateUser(userController.user);
                 Get.back();
               }),
         ],
@@ -81,7 +82,7 @@ class _EditProfileState extends State<EditProfile> {
                           (value) async {
                             userController.user.avatarUrl =
                                 await value.ref.getDownloadURL();
-                            userController.updateUser();
+                            userController.updateUser(userController.user);
                           },
                         );
                       },

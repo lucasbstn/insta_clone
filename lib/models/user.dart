@@ -11,7 +11,7 @@ class User {
   String bio;
   List<dynamic> followers; //list of uids
   List<dynamic> following; //list of uids
-  List<dynamic> posts;
+  List<Post> posts;
 
   User({
     this.username,
@@ -38,8 +38,14 @@ class User {
         phone: map["phone"] == null ? '' : '${map["phone"]}',
         followers: map["followers"] == null ? [] : map["followers"],
         following: map["following"] == null ? [] : map["following"],
-        posts:
-            map["posts"] == null ? [] : map["posts"], //TODO => Post.fromMap()
+        posts: map["posts"] == null
+            ? []
+            : List.generate(
+                map["posts"].length,
+                (index) => Post.fromMap(
+                  map['posts'][index],
+                ),
+              ),
       );
 
   Map<String, dynamic> toMap() => {
@@ -53,6 +59,11 @@ class User {
         "phone": phone == null ? null : phone,
         "followers": followers == [] ? null : followers,
         "following": following == [] ? null : following,
-        "posts": posts == [] ? null : posts, //TODO => Post.toMap()
+        "posts": posts == []
+            ? null
+            : List.generate(
+                posts.length,
+                (index) => posts[index].toMap(),
+              ),
       };
 }

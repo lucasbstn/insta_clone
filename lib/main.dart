@@ -8,7 +8,7 @@ import 'views/login.dart';
 import 'views/profile.dart';
 import 'views/search.dart';
 import 'views/home.dart';
-import 'widgets/add.dart';
+import 'views/add.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,7 +39,6 @@ class MyApp extends StatelessWidget {
       home: GetBuilder<UserController>(
         init: UserController(user),
         builder: (controller) {
-          Get.put(user);
           if (controller.firebaseUser == null) {
             return Login();
           } else {
@@ -56,31 +55,18 @@ class Wrapper extends StatefulWidget {
   _WrapperState createState() => _WrapperState();
 }
 
-class _WrapperState extends State<Wrapper> with SingleTickerProviderStateMixin {
-  TabController _tabController;
+class _WrapperState extends State<Wrapper> {
   List<Icon> tabs = [
     Icon(Icons.home),
     Icon(Icons.search),
     Icon(Icons.add_box),
     Icon(Icons.favorite_border),
-    Icon(Icons.person),
+    Icon(Icons.person, color: Colors.grey),
   ];
+  int _stackIndex = 0;
 
   @override
   void initState() {
-    _tabController = TabController(
-      vsync: this,
-      length: 5,
-    );
-
-    _tabController.addListener(
-      () async {
-        if (_tabController.index == 2) {
-          _tabController.animateTo(_tabController.previousIndex);
-          Get.to(Add());
-        }
-      },
-    );
     super.initState();
     camerasInit();
   }
@@ -93,32 +79,34 @@ class _WrapperState extends State<Wrapper> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: TabBarView(
-        controller: _tabController,
+      body: IndexedStack(
+        index: _stackIndex,
         children: [
           Home(),
           Search(),
-          AddContainer(),
+          Add(),
           Liked(),
-          Profile(),
+          Profile(uid: UserController.to.user.uid),
         ],
       ),
-      bottomNavigationBar: Container(
-        height: 50,
-        child: TabBar(
-          indicatorColor: Theme.of(context).appBarTheme.color,
-          controller: _tabController,
-          tabs: tabs,
-        ),
+      bottomNavigationBar: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: tabs
+            .map(
+              (e) => IconButton(
+                icon: e,
+                onPressed: () {
+                  setState(
+                    () {
+                      _stackIndex = tabs.indexWhere((element) => element == e);
+                    },
+                  );
+                },
+              ),
+            )
+            .toList(),
       ),
     );
-  }
-}
-
-class AddContainer extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }
 

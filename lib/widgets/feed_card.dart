@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:insta_clone/controllers/user_controller.dart';
+import 'package:insta_clone/models/post.dart';
+import 'package:insta_clone/views/comments.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:insta_clone/models/user.dart';
+import 'package:insta_clone/views/profile.dart';
 
 import 'avatar.dart';
 
@@ -7,26 +13,14 @@ class FeedCard extends StatefulWidget {
   const FeedCard({
     Key key,
     @required this.size,
+    @required this.post,
     @required this.user,
-    @required this.isLiked,
-    @required this.numberLikes,
-    @required this.numberComments,
-    @required this.description,
-    @required this.hashtags,
-    @required this.timestamp,
-    @required this.imgUrl,
   }) : super(key: key);
 
   final Size size;
-  final bool isLiked;
-  final int numberLikes;
-  final int numberComments;
-  final String description;
-  final String hashtags;
-  final int timestamp;
-  final String imgUrl;
-  final User user;
 
+  final User user;
+  final Post post;
   @override
   _FeedCardState createState() => _FeedCardState();
 }
@@ -36,6 +30,7 @@ class _FeedCardState extends State<FeedCard> {
   Widget build(BuildContext context) {
     final TransformationController transformationController =
         TransformationController();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -43,7 +38,7 @@ class _FeedCardState extends State<FeedCard> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             GestureDetector(
-              onTap: () => null, //TODO - route to profile
+              onTap: () => Get.to(Profile(uid: widget.user.uid)),
               child: Row(
                 children: [
                   Padding(
@@ -80,7 +75,7 @@ class _FeedCardState extends State<FeedCard> {
             height: widget.size.height * 0.3,
             width: widget.size.width,
             child: Image.network(
-              widget.imgUrl,
+              widget.post.imgUrl,
               fit: BoxFit.cover,
             ),
           ),
@@ -99,14 +94,34 @@ class _FeedCardState extends State<FeedCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         IconButton(
-                          icon: Icon(widget.isLiked
+                          icon: Icon(widget.post.likedBy
+                                  .contains(UserController.to.user.uid)
                               ? Icons.favorite
                               : Icons.favorite_border),
-                          onPressed: () => null,
+                          onPressed: () {
+                            UserController userController = UserController.to;
+                            if (widget.post.likedBy
+                                .contains(UserController.to.user.uid)) {
+                              widget.user.posts
+                                  .firstWhere((post) =>
+                                      post.timestamp == widget.post.timestamp)
+                                  .likedBy
+                                  .remove(userController.user.uid);
+                            } else {
+                              widget.user.posts
+                                  .firstWhere((post) =>
+                                      post.timestamp == widget.post.timestamp)
+                                  .likedBy
+                                  .add(userController.user.uid);
+                            }
+                            userController.updateUser(widget.user);
+                          },
                         ),
                         IconButton(
                           icon: Icon(Icons.chat_bubble_outline),
-                          onPressed: () => null,
+                          onPressed: () => Get.to(
+                            Comments(post: widget.post, user: widget.user),
+                          ),
                         ),
                         IconButton(
                           icon: Icon(Icons.send),
@@ -122,7 +137,7 @@ class _FeedCardState extends State<FeedCard> {
                 ],
               ),
               Text(
-                '${widget.numberLikes} likes',
+                '${widget.post.likedBy.length} likes',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
@@ -139,14 +154,14 @@ class _FeedCardState extends State<FeedCard> {
                     ),
                     children: [
                       TextSpan(
-                        text: widget.description,
+                        text: widget.post.description,
                         style: TextStyle(
                           fontWeight: FontWeight.normal,
                           color: Colors.black,
                         ),
                       ),
                       TextSpan(
-                        text: ' ' + widget.hashtags,
+                        text: ' ' + widget.post.hashtags.join(' '),
                         style: TextStyle(
                           fontWeight: FontWeight.normal,
                           color: Colors.blue,
@@ -157,14 +172,23 @@ class _FeedCardState extends State<FeedCard> {
                 ),
               ),
               GestureDetector(
-                onTap: () => null, //route to detailed post
+                onTap: () => Get.to(
+                  Comments(post: widget.post, user: widget.user),
+                ),
                 child: Text(
-                  'View all ${widget.numberComments} comments',
+                  'View all ${widget.post.comments.length} comments',
                   style: TextStyle(color: Colors.grey[700]),
                 ),
               ),
               Text(
-                '${DateTime.now().difference(DateTime.fromMillisecondsSinceEpoch(widget.timestamp)).inHours} hours ago',
+                timeago.format(
+                  DateTime.now().subtract(
+                    DateTime.now().difference(
+                      DateTime.fromMillisecondsSinceEpoch(
+                          widget.post.timestamp),
+                    ),
+                  ),
+                ),
                 style: TextStyle(color: Colors.grey[700], fontSize: 9),
               ),
             ],

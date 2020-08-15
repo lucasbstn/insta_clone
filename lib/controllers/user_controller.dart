@@ -7,6 +7,8 @@ class UserController extends GetxController {
   FirebaseUser firebaseUser;
   User user;
 
+  static UserController get to => Get.find();
+
   UserController(this.firebaseUser) {
     //if signed in automatically by firebase
     if (firebaseUser != null) {
@@ -27,11 +29,11 @@ class UserController extends GetxController {
     update();
   }
 
-  updateUser() {
+  updateUser(User userToUpdate) {
     Firestore.instance
         .collection('users')
-        .document(user.uid)
-        .setData(user.toMap(), merge: true);
+        .document(userToUpdate.uid)
+        .setData(userToUpdate.toMap(), merge: true);
     update();
   }
 
@@ -43,5 +45,6 @@ class UserController extends GetxController {
               .get())
           .data,
     );
+    update();
   }
 }

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:insta_clone/models/user.dart';
+import 'package:insta_clone/views/profile.dart';
 import 'package:insta_clone/widgets/avatar.dart';
 
 class Search extends StatefulWidget {
@@ -75,6 +76,9 @@ class _SearchState extends State<Search> {
                                 child: Avatar(user: user),
                               ),
                               title: Text(user.username),
+                              onTap: () => Get.to(
+                                Profile(uid: user.uid),
+                              ),
                             );
                           },
                         );
