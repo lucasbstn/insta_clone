@@ -78,6 +78,9 @@ class Home extends StatelessWidget {
                         });
                       },
                     );
+
+                    posts.sort(
+                        (b, a) => a[1].timestamp.compareTo(b[1].timestamp));
                     return ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,

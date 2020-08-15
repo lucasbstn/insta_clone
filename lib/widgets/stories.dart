@@ -15,6 +15,7 @@ class Stories extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 80,
+      width: Get.width - 70,
       child: StreamBuilder(
         stream: Firestore.instance.collection('users').snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -43,7 +44,7 @@ class Stories extends StatelessWidget {
                   padding: EdgeInsets.all(8.0),
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
-                  itemCount: userController.user.following.length,
+                  itemCount: following.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
