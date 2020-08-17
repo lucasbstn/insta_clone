@@ -8,13 +8,13 @@ Note : Work in progress
 
 # Screenshots 
 
-<img src="https://github.com/lucasbstn/insta_clone/blob/master/images/1.png">
+<img height='200px' src="https://github.com/lucasbstn/insta_clone/blob/master/images/1.png">
 
-<img src="https://github.com/lucasbstn/insta_clone/blob/master/images/2.png">
+<img height='200px' src="https://github.com/lucasbstn/insta_clone/blob/master/images/2.png">
 
-<img src="https://github.com/lucasbstn/insta_clone/blob/master/images/3.png">
+<img height='200px' src="https://github.com/lucasbstn/insta_clone/blob/master/images/3.png">
 
-<img src="https://github.com/lucasbstn/insta_clone/blob/master/images/4.png">
+<img height='200px' src="https://github.com/lucasbstn/insta_clone/blob/master/images/4.png">
 
 ## Getting Started
 
