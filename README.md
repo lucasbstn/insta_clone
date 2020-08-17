@@ -1,4 +1,4 @@
-## Instagram Clone
+# Instagram Clone
 
 A flutter fully functional instagram clone.
 I decided to challenge myself to recreate instagram. This is a purely technical challenge as the UI prebuild.
@@ -6,7 +6,7 @@ I also experience with the Get package as a state management solution on this pr
 
 Note : Work in progress
 
-# Screenshots 
+## Screenshots 
 <p float="left">
   <img src="/images/1.png" width="100" />
   <img src="/images/2.png" width="100" /> 
