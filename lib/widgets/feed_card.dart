@@ -94,10 +94,10 @@ class _FeedCardState extends State<FeedCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         IconButton(
-                          icon: Icon(widget.post.likedBy
+                          icon: widget.post.likedBy
                                   .contains(UserController.to.user.uid)
-                              ? Icons.favorite
-                              : Icons.favorite_border),
+                              ? Icon(Icons.favorite, color: Colors.red)
+                              : Icon(Icons.favorite_border),
                           onPressed: () {
                             UserController userController = UserController.to;
                             if (widget.post.likedBy
