@@ -7,14 +7,13 @@ I also experience with the Get package as a state management solution on this pr
 Note : Work in progress
 
 # Screenshots 
+<p float="left">
+  <img src="/images/1.png" width="100" />
+  <img src="/images/2.png" width="100" /> 
+  <img src="/images/3.png" width="100" />
+    <img src="/images/4.png" width="100" />
+</p>
 
-<img height='200px' src="https://github.com/lucasbstn/insta_clone/blob/master/images/1.png">
-
-<img height='200px' src="https://github.com/lucasbstn/insta_clone/blob/master/images/2.png">
-
-<img height='200px' src="https://github.com/lucasbstn/insta_clone/blob/master/images/3.png">
-
-<img height='200px' src="https://github.com/lucasbstn/insta_clone/blob/master/images/4.png">
 
 ## Getting Started
 
